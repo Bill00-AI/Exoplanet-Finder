@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Exoplanet Hunter</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align:center; padding:40px; background:#f5f7fa; color:#111; }
+    input { padding:8px; width:220px; }
+    button { padding:8px 16px; margin-left:8px; }
+    .box { background:white; display:inline-block; padding:20px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    table { margin:10px auto; border-collapse:collapse; }
+    th, td { padding:6px 10px; border:1px solid #ddd; }
+    img { margin-top:12px; border:1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Exoplanet Hunter</h1>
+    <form method="POST">
+      <input type="text" name="star_id" placeholder="Enter Star ID (e.g. KIC 11446443)" required>
+      <input type="text" name="threshold" placeholder="Threshold (optional, e.g. 0.995)" style="width:150px;">
+      <button type="submit">Check</button>
+    </form>
+    
+    <!-- conditional display -->
+
+    {% if result %}
+      <h3>Result</h3>
+      <p>{{ result }}</p>
+    {% endif %}
+
+    {% if plot_url %}
+      <img src="{{ plot_url }}" alt="Light Curve" width="800">
+    {% endif %}
+
+    {% if planets and planets|length > 0 %}
+      <h3>Confirmed Planets</h3>
+      <table>
+        <tr><th>Name</th><th>Orbital Period (days)</th><th>Radius (Earth radii)</th></tr>
+        {% for p in planets %}
+          <tr>
+            <td>{{ p.pl_name }}</td>
+            <td>{{ p.pl_orbper }}</td>
+            <td>{{ p.pl_rade }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% elif planets is not none %}
+      <p>No confirmed planets found for this star (according to NASA archive).</p>
+    {% endif %}
+  </div>
+</body>
+</html>
