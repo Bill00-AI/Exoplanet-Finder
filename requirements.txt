@@ -3,5 +3,4 @@ numpy
 matplotlib
 requests
 lightkurve
-os
 gunicorn
