@@ -59,10 +59,10 @@ def index():
                 lc = lc.normalize()
             except Exception:
                 # sometimes the object is different; 
-                lc.brightness = lc.brightness / np.nanmedian(lc.brightness)
+                lc.flux = lc.flux / np.nanmedian(lc.flux)
 
             # prepare the data
-            brightness = lc.brightness.value
+            brightness = lc.flux.value
             time = lc.time.value
 
             dips = brightness < threshold
@@ -84,7 +84,7 @@ def index():
             plt.savefig(plot_path, bbox_inches="tight")
             plt.close()
 
-            plot_url = f"/{plot_path.replace(os.path.sep, '/')}"
+            plot_path = f"/{plot_path.replace(os.path.sep, '/')}"
 
             #  result message 
             if np.any(dips):
