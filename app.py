@@ -31,7 +31,7 @@ os.makedirs(PLOT_DIR, exist_ok=True)
 def index():
     result = None
     planets = []
-    plot_url = None
+    plot_path = None
 
     if request.method == "POST":
         star_id = request.form.get("star_id", "").strip()
@@ -59,23 +59,23 @@ def index():
                 lc = lc.normalize()
             except Exception:
                 # sometimes the object is different; 
-                lc.flux = lc.flux / np.nanmedian(lc.flux)
+                lc.brightness = lc.brightness / np.nanmedian(lc.brightness)
 
-            # --- prepare data ---
-            flux = lc.flux.value
+            # prepare the data
+            brightness = lc.brightness.value
             time = lc.time.value
 
-            dips = flux < threshold
+            dips = brightness < threshold
 
-            # --- save plot ---
+            #  save plot 
             fname = "latest_plot.png"
             plot_path = os.path.join(PLOT_DIR, fname)
 
             plt.figure(figsize=(10,5))
-            plt.plot(time, flux, "k.", markersize=2, label="Brightness")
+            plt.plot(time, brightness, "k.", markersize=2, label="Brightness")
             plt.axhline(threshold, color="red", linestyle="--", label=f"Threshold {threshold}")
             if np.any(dips):
-                plt.plot(time[dips], flux[dips], "ro", markersize=4, label="Detected Dip")
+                plt.plot(time[dips], brightness[dips], "ro", markersize=4, label="Detected Dip")
             plt.xlabel("Time (days)")
             plt.ylabel("Normalized Brightness")
             plt.title(f"Light Curve for {star_id}")
@@ -86,7 +86,7 @@ def index():
 
             plot_url = f"/{plot_path.replace(os.path.sep, '/')}"
 
-            # --- result message ---
+            #  result message 
             if np.any(dips):
                 result = f"Possible transit event(s) detected in {star_id}!"
             else:
@@ -109,7 +109,8 @@ def index():
             # it takes everything and show page for debugging
             result = f"Error while processing '{star_id}': {e}"
 
-    return render_template("index.html", result=result, plot_url=plot_url, planets=planets)
-
+    return render_template("index.html", result=result, plot_path=plot_path, planets=planets)
 if __name__ == "__main__":
-    app.run(debug=True)
+        import os
+        port = int(os.environ.get("PORT", 5000))
+        app.run(host="0.0.0.0", port=port)
