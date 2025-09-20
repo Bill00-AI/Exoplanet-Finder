@@ -12,13 +12,22 @@
     th, td { padding:6px 10px; border:1px solid #ddd; }
     img { margin-top:12px; border:1px solid #ddd; }
   </style>
+  <script>
+    function showloading() {
+     document.getElementById("loadingMessage").style.display="block";
+
+    }
+  </script>
 </head>
 <body>
   <div class="box">
     <h1>Exoplanet Hunter</h1>
-    <form method="POST">
+    <form action="/result" method="POST" onsubmit="showloading()">
       <input type="text" name="star_id" placeholder="Enter Star ID (e.g. KIC 11446443)" required>
       <input type="text" name="threshold" placeholder="Threshold (optional, e.g. 0.995)" style="width:150px;">
+      <div id="Loadingmessage" style="display:none"; color:blue; font-weight:bold;>
+        Fetching Data....Please wait
+      </div>
       <button type="submit">Check</button>
     </form>
     

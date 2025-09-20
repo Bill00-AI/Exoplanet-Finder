@@ -12,7 +12,7 @@ def resolve_star_id(star_id):
     q = f"select distinct hostname from ps where (hostname like 'Kepler%' or hostname like 'K2%') and st_id like '%{star_id}%'"
     params = {"query": q, "format": "json"}
     try:
-        r = requests.get(nasa_url, params=params, timeout=30)
+        r = requests.get(nasa_url, params=params, timeout=40)
         if r.status_code == 200:
             data = r.json()
             if data and len(data) > 0:
@@ -98,13 +98,14 @@ def index():
             nasa_url = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync"
             params = {"query": q, "format": "json"}
             try:
-                r = requests.get(nasa_url, params=params, timeout=30)
+                r = requests.get(nasa_url, params=params, timeout=40)
                 if r.status_code == 200:
                     planets = r.json()
                 else:
                     planets = []
             except Exception:
                 planets = []
+                result+="(Planet Data not available at the moment)"
 
         except Exception as e:
             # it takes everything and show page for debugging
