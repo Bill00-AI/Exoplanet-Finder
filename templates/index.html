@@ -14,7 +14,7 @@
   </style>
   <script>
     function showloading() {
-     document.getElementById("loadingMessage").style.display="block";
+     document.getElementById("loading").style.display="block";
 
     }
   </script>
@@ -25,7 +25,7 @@
     <form  method="POST" onsubmit="showloading()">
       <input type="text" name="star_id" placeholder="Enter Star ID (e.g. KIC 11446443)" required>
       <input type="text" name="threshold" placeholder="Threshold (optional, e.g. 0.995)" style="width:150px;">
-      <div id="Loadingmessage" style="display:none"; color:blue; font-weight:bold;>
+      <div id="Loading" style="display:none; color:blue; font-weight:bold;">
         Fetching Data....Please wait
       </div>
       <button type="submit">Check</button>
