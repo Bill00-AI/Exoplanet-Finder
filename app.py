@@ -12,7 +12,7 @@ def resolve_star_id(star_id):
     q = f"select distinct hostname from ps where (hostname like 'Kepler%' or hostname like 'K2%') and st_id like '%{star_id}%'"
     params = {"query": q, "format": "json"}
     try:
-        r = requests.get(nasa_url, params=params, timeout=20)
+        r = requests.get(nasa_url, params=params, timeout=30)
         if r.status_code == 200:
             data = r.json()
             if data and len(data) > 0:
@@ -86,6 +86,7 @@ def index():
 
             plot_path = f"/{plot_path.replace(os.path.sep, '/')}"
 
+
             #  result message 
             if np.any(dips):
                 result = f"Possible transit event(s) detected in {star_id}!"
@@ -97,7 +98,7 @@ def index():
             nasa_url = "https://exoplanetarchive.ipac.caltech.edu/TAP/sync"
             params = {"query": q, "format": "json"}
             try:
-                r = requests.get(nasa_url, params=params, timeout=20)
+                r = requests.get(nasa_url, params=params, timeout=30)
                 if r.status_code == 200:
                     planets = r.json()
                 else:
