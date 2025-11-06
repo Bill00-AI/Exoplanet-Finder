@@ -105,7 +105,7 @@ def index():
                     planets = []
             except Exception:
                 planets = []
-                result+="(Planet Data not available at the moment)"
+                result+="Planet Data not available at the moment"
 
         except Exception as e:
             # it takes everything and show page for debugging
